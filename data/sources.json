@@ -128,5 +128,15 @@
         "url": "https://www.forbes.com/business/feed/",
         "category": "US Economy",
         "source": "Forbes Economics"
+    },
+    {
+        "url": "https://36kr.com/feed",
+        "category": "Technology",
+        "source": "36Kr"
+    },
+    {
+        "url": "https://www.huxiu.com/rss/0.xml",
+        "category": "Technology",
+        "source": "Huxiu"
     }
 ]

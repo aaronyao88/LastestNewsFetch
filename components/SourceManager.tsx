@@ -8,6 +8,8 @@ interface Source {
     source: string;
 }
 
+const CATEGORIES = ['AI', 'Technology', 'US Stocks', 'US Economy'];
+
 export function SourceManager() {
     const [sources, setSources] = useState<Source[]>([]);
     const [newSource, setNewSource] = useState({ url: '', category: 'AI', source: '' });
@@ -18,9 +20,15 @@ export function SourceManager() {
     }, []);
 
     const loadSources = async () => {
-        const res = await fetch('/api/sources');
-        const data = await res.json();
-        setSources(data.sources || []);
+        try {
+            const res = await fetch('/api/sources');
+            if (!res.ok) throw new Error('Failed to fetch sources');
+            const data = await res.json();
+            setSources(data?.sources || []);
+        } catch (error) {
+            console.error('Error loading sources:', error);
+            setSources([]);
+        }
     };
 
     const addSource = async () => {
@@ -47,67 +55,119 @@ export function SourceManager() {
         setLoading(false);
     };
 
-    return (
-        <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-bold mb-4">信息源管理</h2>
+    // Group sources by category
+    const groupedSources = CATEGORIES.reduce((acc, category) => {
+        acc[category] = sources.filter(s => s.category === category);
+        return acc;
+    }, {} as Record<string, Source[]>);
 
+    // Helper to get icon URL
+    const getIconUrl = (url: string) => `/api/icon?url=${encodeURIComponent(url)}`;
+
+    return (
+        <div className="space-y-8">
             {/* Add Source Form */}
-            <div className="mb-6 p-4 bg-gray-50 rounded">
-                <h3 className="font-semibold mb-3">添加新信息源</h3>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-                    <input
-                        type="text"
-                        placeholder="RSS URL"
-                        value={newSource.url}
-                        onChange={(e) => setNewSource({ ...newSource, url: e.target.value })}
-                        className="px-3 py-2 border rounded text-sm"
-                    />
-                    <select
-                        value={newSource.category}
-                        onChange={(e) => setNewSource({ ...newSource, category: e.target.value })}
-                        className="px-3 py-2 border rounded text-sm"
-                    >
-                        <option value="AI">AI</option>
-                        <option value="Technology">Technology</option>
-                        <option value="US Stocks">US Stocks</option>
-                        <option value="US Economy">US Economy</option>
-                    </select>
-                    <input
-                        type="text"
-                        placeholder="来源名称"
-                        value={newSource.source}
-                        onChange={(e) => setNewSource({ ...newSource, source: e.target.value })}
-                        className="px-3 py-2 border rounded text-sm"
-                    />
-                    <button
-                        onClick={addSource}
-                        disabled={loading}
-                        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50 text-sm"
-                    >
-                        添加
-                    </button>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <span className="w-1 h-5 bg-blue-600 rounded-full"></span>
+                    添加新信息源
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                    <div className="md:col-span-5">
+                        <label className="block text-xs font-semibold text-gray-700 mb-1">RSS 地址</label>
+                        <input
+                            type="text"
+                            placeholder="https://example.com/feed"
+                            value={newSource.url}
+                            onChange={(e) => setNewSource({ ...newSource, url: e.target.value })}
+                            className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                        />
+                    </div>
+                    <div className="md:col-span-3">
+                        <label className="block text-xs font-semibold text-gray-700 mb-1">来源名称</label>
+                        <input
+                            type="text"
+                            placeholder="例如: 36氪"
+                            value={newSource.source}
+                            onChange={(e) => setNewSource({ ...newSource, source: e.target.value })}
+                            className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                        />
+                    </div>
+                    <div className="md:col-span-2">
+                        <label className="block text-xs font-semibold text-gray-700 mb-1">分类</label>
+                        <select
+                            value={newSource.category}
+                            onChange={(e) => setNewSource({ ...newSource, category: e.target.value })}
+                            className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                        >
+                            {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                    </div>
+                    <div className="md:col-span-2 flex items-end">
+                        <button
+                            onClick={addSource}
+                            disabled={loading}
+                            className="w-full px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+                        >
+                            {loading ? '添加中...' : '添加源'}
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            {/* Sources List */}
-            <div className="space-y-2">
-                <h3 className="font-semibold mb-2">当前信息源 ({sources.length})</h3>
-                {sources.map((s, idx) => (
-                    <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded hover:bg-gray-100">
-                        <div className="flex-grow">
-                            <div className="font-medium text-sm">{s.source}</div>
-                            <div className="text-xs text-gray-500 truncate">{s.url}</div>
-                            <span className="inline-block mt-1 px-2 py-0.5 bg-blue-100 text-blue-800 rounded text-xs">{s.category}</span>
+            {/* Sources List by Category */}
+            <div className="space-y-6">
+                {CATEGORIES.map(category => {
+                    const categorySources = groupedSources[category] || [];
+                    if (categorySources.length === 0) return null;
+
+                    return (
+                        <div key={category} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                            <div className="bg-gray-50 px-6 py-3 border-b border-gray-200 flex justify-between items-center">
+                                <h3 className="font-bold text-gray-800 flex items-center gap-2">
+                                    {category}
+                                    <span className="px-2 py-0.5 bg-gray-200 text-gray-600 text-xs rounded-full font-medium">
+                                        {categorySources.length}
+                                    </span>
+                                </h3>
+                            </div>
+                            <div className="divide-y divide-gray-100">
+                                {categorySources.map((s, idx) => (
+                                    <div key={idx} className="p-4 flex items-center justify-between hover:bg-gray-50 transition-colors group">
+                                        <div className="flex items-center gap-4 overflow-hidden">
+                                            <div className="flex-shrink-0 w-10 h-10 bg-white border border-gray-200 rounded-lg p-1.5 flex items-center justify-center shadow-sm">
+                                                {/* Use standard img tag to avoid Next.js Image config issues with dynamic API URLs */}
+                                                <img
+                                                    src={getIconUrl(s.url)}
+                                                    alt={s.source}
+                                                    width={24}
+                                                    height={24}
+                                                    className="w-full h-full object-contain"
+                                                    onError={(e) => {
+                                                        (e.target as HTMLImageElement).src = '/default-source-icon.png';
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="min-w-0">
+                                                <div className="font-bold text-gray-900 text-base mb-0.5">{s.source}</div>
+                                                <div className="text-xs text-gray-500 truncate max-w-md font-mono bg-gray-100 px-1.5 py-0.5 rounded inline-block">
+                                                    {s.url}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={() => deleteSource(s.url)}
+                                            disabled={loading}
+                                            className="ml-4 px-3 py-1.5 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md text-sm font-medium transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                                        >
+                                            删除
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                        <button
-                            onClick={() => deleteSource(s.url)}
-                            disabled={loading}
-                            className="ml-4 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50 text-xs"
-                        >
-                            删除
-                        </button>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
         </div>
     );

@@ -65,7 +65,22 @@ export async function GET(request: NextRequest) {
     } catch (error: any) {
         console.error('Icon fetch error:', error.message);
 
-        // 返回默认图标或错误
+        // Return default icon on error
+        try {
+            const defaultIconPath = path.join(process.cwd(), 'public', 'default-source-icon.png');
+            if (fs.existsSync(defaultIconPath)) {
+                const iconBuffer = fs.readFileSync(defaultIconPath);
+                return new NextResponse(iconBuffer, {
+                    headers: {
+                        'Content-Type': 'image/png',
+                        'Cache-Control': 'no-cache',
+                    },
+                });
+            }
+        } catch (e) {
+            console.error('Failed to serve default icon:', e);
+        }
+
         return NextResponse.json({ error: 'Failed to fetch icon' }, { status: 500 });
     }
 }

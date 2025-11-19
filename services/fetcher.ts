@@ -2,7 +2,7 @@ import Parser from 'rss-parser';
 import { NewsItem, Category } from '@/types';
 import fs from 'fs';
 import path from 'path';
-import { fetchTwitterNews } from './twitter-fetcher';
+// import { fetchTwitterNews } from './twitter-fetcher';
 
 const parser = new Parser({
     timeout: 8000, // 8秒超时
@@ -90,13 +90,13 @@ export async function fetchNews(targetDate?: Date): Promise<NewsItem[]> {
 
     console.log('RSS 抓取完成，各分类数量:', categoryCounts);
 
-    // Fetch from Twitter/X.com
-    console.log('正在抓取 Twitter...');
-    const twitterItems = await fetchTwitterNews(targetDate);
-    console.log(`Twitter 抓取完成: ${twitterItems.length} 条`);
+    // Fetch from Twitter/X.com (Disabled due to login requirements)
+    // console.log('正在抓取 Twitter...');
+    // const twitterItems = await fetchTwitterNews(targetDate);
+    // console.log(`Twitter 抓取完成: ${twitterItems.length} 条`);
 
     // Merge Twitter items
-    newsItems.push(...twitterItems);
+    // newsItems.push(...twitterItems);
 
     return newsItems;
 }

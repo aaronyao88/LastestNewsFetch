@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { clsx } from 'clsx';
 import Image from 'next/image';
 import { TopicBadge } from './TopicBadge';
+import { renderHighlightedText } from '@/lib/text-utils';
 
 const CATEGORIES: (Category | 'All')[] = ['All', 'AI', 'Technology', 'US Stocks', 'US Economy', 'Other'];
 
@@ -211,7 +212,7 @@ export function ReportView({ report, topicsMap = {} }: ReportViewProps) {
                                         1) 内容总结
                                     </h3>
                                     <p className="text-base text-gray-700 leading-relaxed text-justify">
-                                        {item.summary}
+                                        {renderHighlightedText(item.summary)}
                                     </p>
                                 </div>
 
@@ -223,7 +224,7 @@ export function ReportView({ report, topicsMap = {} }: ReportViewProps) {
                                             2) 市场反应
                                         </h3>
                                         <p className="text-base text-gray-700 leading-relaxed">
-                                            {item.marketReaction}
+                                            {renderHighlightedText(item.marketReaction)}
                                         </p>
                                     </div>
                                 )}

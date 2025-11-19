@@ -5,6 +5,7 @@ import { ReportView } from '@/components/ReportView';
 import { Sidebar } from '@/components/Sidebar';
 import { TriggerButton } from '@/components/TriggerButton';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 async function getReport(date?: string): Promise<DailyReport | null> {
   const reportsDir = path.join(process.cwd(), 'data', 'reports');
@@ -44,6 +45,17 @@ function loadTopicsMap() {
   return {};
 }
 
+function getDates(): string[] {
+  const reportsDir = path.join(process.cwd(), 'data', 'reports');
+  if (!fs.existsSync(reportsDir)) return [];
+
+  return fs.readdirSync(reportsDir)
+    .filter(f => f.endsWith('.json'))
+    .map(f => f.replace('.json', ''))
+    .sort()
+    .reverse();
+}
+
 export default async function Home({
   searchParams
 }: {
@@ -52,10 +64,13 @@ export default async function Home({
   const params = await searchParams;
   const report = await getReport(params.date);
   const topicsMap = loadTopicsMap();
+  const dates = getDates();
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <Sidebar />
+      <Suspense fallback={<div className="w-64 bg-white border-r h-screen" />}>
+        <Sidebar dates={dates} />
+      </Suspense>
       <main className="flex-1 ml-64 p-10">
         <div className="flex justify-between items-center mb-8 max-w-4xl mx-auto">
           <h1 className="text-2xl font-bold text-gray-800">AI与科技新闻聚合</h1>
