@@ -1,64 +1,87 @@
-import Image from "next/image";
+import fs from 'fs';
+import path from 'path';
+import { DailyReport } from '@/types';
+import { ReportView } from '@/components/ReportView';
+import { Sidebar } from '@/components/Sidebar';
+import { TriggerButton } from '@/components/TriggerButton';
+import Link from 'next/link';
 
-export default function Home() {
+async function getReport(date?: string): Promise<DailyReport | null> {
+  const reportsDir = path.join(process.cwd(), 'data', 'reports');
+  if (!fs.existsSync(reportsDir)) return null;
+
+  let filename = '';
+  if (date) {
+    filename = `${date}.json`;
+  } else {
+    const files = fs.readdirSync(reportsDir).filter(f => f.endsWith('.json')).sort().reverse();
+    if (files.length === 0) return null;
+    filename = files[0];
+  }
+
+  const filePath = path.join(reportsDir, filename);
+  if (!fs.existsSync(filePath)) return null;
+
+  const content = fs.readFileSync(filePath, 'utf-8');
+  return JSON.parse(content);
+}
+
+function loadTopicsMap() {
+  try {
+    const topicsPath = path.join(process.cwd(), 'data', 'topics.json');
+    if (fs.existsSync(topicsPath)) {
+      const data = fs.readFileSync(topicsPath, 'utf-8');
+      const config = JSON.parse(data);
+      const map: Record<string, { name: string; color: string }> = {};
+      config.topics.forEach((t: any) => {
+        map[t.id] = { name: t.name, color: t.color };
+      });
+      return map;
+    }
+  } catch (error) {
+    console.error('Error loading topics:', error);
+  }
+  return {};
+}
+
+export default async function Home({
+  searchParams
+}: {
+  searchParams: Promise<{ date?: string }>
+}) {
+  const params = await searchParams;
+  const report = await getReport(params.date);
+  const topicsMap = loadTopicsMap();
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="flex min-h-screen bg-gray-50">
+      <Sidebar />
+      <main className="flex-1 ml-64 p-10">
+        <div className="flex justify-between items-center mb-8 max-w-4xl mx-auto">
+          <h1 className="text-2xl font-bold text-gray-800">AI与科技新闻聚合</h1>
+          <div className="flex items-center gap-4">
+            <Link href="/topics" className="text-sm text-blue-600 hover:underline">
+              专题管理
+            </Link>
+            <Link href="/sources" className="text-sm text-blue-600 hover:underline">
+              信息源管理
+            </Link>
+            <TriggerButton />
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+
+        {report ? (
+          <ReportView report={report} topicsMap={topicsMap} />
+        ) : (
+          <div className="text-center py-20 max-w-4xl mx-auto">
+            <p className="text-gray-500 text-lg">
+              {params.date ? `未找到 ${params.date} 的报告` : '还没有生成任何报告'}
+            </p>
+            {!params.date && (
+              <p className="text-gray-400 mt-2">点击上方按钮生成第一份报告</p>
+            )}
+          </div>
+        )}
       </main>
     </div>
   );
