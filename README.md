@@ -68,3 +68,6 @@ To run the aggregation daily at 10:00 AM:
 - `services/`: Core logic (Fetcher, Translator, Aggregator).
 - `scripts/`: Standalone scripts for automation.
 - `data/reports/`: JSON storage for daily reports.
+
+
+##testtest
