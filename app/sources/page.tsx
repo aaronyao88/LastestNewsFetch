@@ -24,11 +24,11 @@ export default function SourcesPage() {
             <Suspense fallback={<div className="w-64 bg-white border-r h-screen" />}>
                 <Sidebar dates={dates} />
             </Suspense>
-            <main className="flex-1 ml-64 p-10">
+            <main className="flex-1 lg:ml-64 p-4 sm:p-6 lg:p-10">
                 <div className="max-w-4xl mx-auto">
-                    <div className="flex items-center justify-between mb-6">
-                        <h1 className="text-2xl font-bold text-gray-800">信息源管理</h1>
-                        <Link href="/" className="text-blue-600 hover:underline text-sm">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-4 sm:mb-6 pt-12 lg:pt-0">
+                        <h1 className="text-xl sm:text-2xl font-bold text-gray-800">信息源管理</h1>
+                        <Link href="/" className="text-blue-600 hover:underline text-sm whitespace-nowrap">
                             ← 返回首页
                         </Link>
                     </div>

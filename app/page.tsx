@@ -71,14 +71,14 @@ export default async function Home({
       <Suspense fallback={<div className="w-64 bg-white border-r h-screen" />}>
         <Sidebar dates={dates} />
       </Suspense>
-      <main className="flex-1 ml-64 p-10">
-        <div className="flex justify-between items-center mb-8 max-w-4xl mx-auto">
-          <h1 className="text-2xl font-bold text-gray-800">AI与科技新闻聚合</h1>
-          <div className="flex items-center gap-4">
-            <Link href="/topics" className="text-sm text-blue-600 hover:underline">
+      <main className="flex-1 lg:ml-64 p-4 sm:p-6 lg:p-10">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8 max-w-4xl mx-auto pt-12 lg:pt-0">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-800">AI与科技新闻聚合</h1>
+          <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
+            <Link href="/topics" className="text-sm text-blue-600 hover:underline whitespace-nowrap">
               专题管理
             </Link>
-            <Link href="/sources" className="text-sm text-blue-600 hover:underline">
+            <Link href="/sources" className="text-sm text-blue-600 hover:underline whitespace-nowrap">
               信息源管理
             </Link>
             <TriggerButton />
@@ -88,12 +88,12 @@ export default async function Home({
         {report ? (
           <ReportView report={report} topicsMap={topicsMap} />
         ) : (
-          <div className="text-center py-20 max-w-4xl mx-auto">
-            <p className="text-gray-500 text-lg">
+          <div className="text-center py-20 max-w-4xl mx-auto px-4">
+            <p className="text-gray-500 text-base sm:text-lg">
               {params.date ? `未找到 ${params.date} 的报告` : '还没有生成任何报告'}
             </p>
             {!params.date && (
-              <p className="text-gray-400 mt-2">点击上方按钮生成第一份报告</p>
+              <p className="text-gray-400 mt-2 text-sm sm:text-base">点击上方按钮生成第一份报告</p>
             )}
           </div>
         )}

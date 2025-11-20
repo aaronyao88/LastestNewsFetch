@@ -55,17 +55,17 @@ export default function TopicsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 p-10">
+        <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-10">
             <div className="max-w-4xl mx-auto">
-                <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900">专题管理</h1>
-                    <Link href="/" className="text-blue-600 hover:underline">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-6 sm:mb-8">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">专题管理</h1>
+                    <Link href="/" className="text-blue-600 hover:underline text-sm whitespace-nowrap">
                         ← 返回首页
                     </Link>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-                    <h2 className="text-lg font-semibold mb-4">专题说明</h2>
+                <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
+                    <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">专题说明</h2>
                     <p className="text-gray-600 text-sm mb-2">
                         专题系统会自动识别新闻内容中的关键词，为匹配的新闻提升热度指数，确保您感兴趣的内容优先展示。
                     </p>
@@ -74,13 +74,13 @@ export default function TopicsPage() {
                     </p>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                     {topics.map(topic => (
-                        <div key={topic.id} className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-                            <div className="flex items-start justify-between mb-4">
-                                <div className="flex-1">
-                                    <div className="flex items-center gap-3 mb-2">
-                                        <h3 className="text-xl font-bold text-gray-900">{topic.name}</h3>
+                        <div key={topic.id} className="bg-white rounded-lg shadow-sm p-4 sm:p-6 border border-gray-200">
+                            <div className="flex flex-col sm:flex-row items-start justify-between gap-3 sm:gap-0 mb-3 sm:mb-4">
+                                <div className="flex-1 w-full sm:w-auto">
+                                    <div className="flex items-center gap-2 sm:gap-3 mb-2 flex-wrap">
+                                        <h3 className="text-lg sm:text-xl font-bold text-gray-900">{topic.name}</h3>
                                         <span className={`px-2 py-1 rounded text-xs font-semibold ${topic.enabled ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'
                                             }`}>
                                             {topic.enabled ? '已启用' : '已禁用'}
@@ -93,9 +93,9 @@ export default function TopicsPage() {
                                 </div>
                                 <button
                                     onClick={() => toggleTopic(topic)}
-                                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${topic.enabled
-                                            ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                            : 'bg-blue-600 text-white hover:bg-blue-700'
+                                    className={`w-full sm:w-auto px-4 py-2 rounded-lg font-medium transition-colors text-sm ${topic.enabled
+                                        ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                        : 'bg-blue-600 text-white hover:bg-blue-700'
                                         }`}
                                 >
                                     {topic.enabled ? '禁用' : '启用'}

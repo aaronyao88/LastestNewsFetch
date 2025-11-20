@@ -1,142 +1,152 @@
 [
-    {
-        "url": "https://www.artificialintelligence-news.com/feed/",
-        "category": "AI",
-        "source": "AI News"
-    },
-    {
-        "url": "https://venturebeat.com/category/ai/feed/",
-        "category": "AI",
-        "source": "VentureBeat AI"
-    },
-    {
-        "url": "https://techcrunch.com/category/artificial-intelligence/feed/",
-        "category": "AI",
-        "source": "TechCrunch AI"
-    },
-    {
-        "url": "https://www.theverge.com/rss/artificial-intelligence/index.xml",
-        "category": "AI",
-        "source": "The Verge AI"
-    },
-    {
-        "url": "https://openai.com/blog/rss.xml",
-        "category": "AI",
-        "source": "OpenAI"
-    },
-    {
-        "url": "https://www.latent.space/feed",
-        "category": "AI",
-        "source": "Latent Space"
-    },
-    {
-        "url": "https://www.technologyreview.com/topic/artificial-intelligence/feed",
-        "category": "AI",
-        "source": "MIT Technology Review AI"
-    },
-    {
-        "url": "https://arstechnica.com/tag/artificial-intelligence/feed/",
-        "category": "AI",
-        "source": "Ars Technica AI"
-    },
-    {
-        "url": "https://techcrunch.com/feed/",
-        "category": "Technology",
-        "source": "TechCrunch"
-    },
-    {
-        "url": "https://www.theverge.com/rss/index.xml",
-        "category": "Technology",
-        "source": "The Verge"
-    },
-    {
-        "url": "https://www.wired.com/feed/rss",
-        "category": "Technology",
-        "source": "Wired"
-    },
-    {
-        "url": "https://arstechnica.com/feed/",
-        "category": "Technology",
-        "source": "Ars Technica"
-    },
-    {
-        "url": "https://www.lennysnewsletter.com/feed",
-        "category": "Technology",
-        "source": "Lenny's Newsletter"
-    },
-    {
-        "url": "https://news.ycombinator.com/rss",
-        "category": "Technology",
-        "source": "Hacker News"
-    },
-    {
-        "url": "https://www.ycombinator.com/blog/feed",
-        "category": "Technology",
-        "source": "Y Combinator"
-    },
-    {
-        "url": "https://github.blog/feed/",
-        "category": "Technology",
-        "source": "GitHub Blog"
-    },
-    {
-        "url": "https://a16z.com/feed/",
-        "category": "Technology",
-        "source": "Andreessen Horowitz"
-    },
-    {
-        "url": "https://finance.yahoo.com/news/rssindex",
-        "category": "US Stocks",
-        "source": "Yahoo Finance"
-    },
-    {
-        "url": "https://www.cnbc.com/id/10000664/device/rss/rss.html",
-        "category": "US Stocks",
-        "source": "CNBC Markets"
-    },
-    {
-        "url": "https://feeds.marketwatch.com/marketwatch/topstories/",
-        "category": "US Stocks",
-        "source": "MarketWatch"
-    },
-    {
-        "url": "https://www.reuters.com/business/feed/",
-        "category": "US Stocks",
-        "source": "Reuters Business"
-    },
-    {
-        "url": "https://seekingalpha.com/feed.xml",
-        "category": "US Stocks",
-        "source": "Seeking Alpha"
-    },
-    {
-        "url": "https://www.cnbc.com/id/20910258/device/rss/rss.html",
-        "category": "US Economy",
-        "source": "CNBC Economy"
-    },
-    {
-        "url": "https://www.investing.com/rss/news_25.rss",
-        "category": "US Economy",
-        "source": "Investing.com"
-    },
-    {
-        "url": "https://www.economist.com/finance-and-economics/rss.xml",
-        "category": "US Economy",
-        "source": "The Economist"
-    },
-    {
-        "url": "https://www.forbes.com/business/feed/",
-        "category": "US Economy",
-        "source": "Forbes Economics"
-    },
-    {
-        "url": "https://36kr.com/feed",
-        "category": "Technology",
-        "source": "36Kr"
-    },
-    {
-        "url": "https://www.huxiu.com/rss/0.xml",
-        "category": "Technology",
-        "source": "Huxiu"
-    }
+  {
+    "url": "https://www.artificialintelligence-news.com/feed/",
+    "category": "AI",
+    "source": "AI News"
+  },
+  {
+    "url": "https://venturebeat.com/category/ai/feed/",
+    "category": "AI",
+    "source": "VentureBeat AI"
+  },
+  {
+    "url": "https://techcrunch.com/category/artificial-intelligence/feed/",
+    "category": "AI",
+    "source": "TechCrunch AI"
+  },
+  {
+    "url": "https://www.theverge.com/rss/artificial-intelligence/index.xml",
+    "category": "AI",
+    "source": "The Verge AI"
+  },
+  {
+    "url": "https://openai.com/blog/rss.xml",
+    "category": "AI",
+    "source": "OpenAI"
+  },
+  {
+    "url": "https://www.latent.space/feed",
+    "category": "AI",
+    "source": "Latent Space"
+  },
+  {
+    "url": "https://www.technologyreview.com/topic/artificial-intelligence/feed",
+    "category": "AI",
+    "source": "MIT Technology Review AI"
+  },
+  {
+    "url": "https://arstechnica.com/tag/artificial-intelligence/feed/",
+    "category": "AI",
+    "source": "Ars Technica AI"
+  },
+  {
+    "url": "https://techcrunch.com/feed/",
+    "category": "Technology",
+    "source": "TechCrunch"
+  },
+  {
+    "url": "https://www.theverge.com/rss/index.xml",
+    "category": "Technology",
+    "source": "The Verge"
+  },
+  {
+    "url": "https://www.wired.com/feed/rss",
+    "category": "Technology",
+    "source": "Wired"
+  },
+  {
+    "url": "https://arstechnica.com/feed/",
+    "category": "Technology",
+    "source": "Ars Technica"
+  },
+  {
+    "url": "https://www.lennysnewsletter.com/feed",
+    "category": "Technology",
+    "source": "Lenny's Newsletter"
+  },
+  {
+    "url": "https://news.ycombinator.com/rss",
+    "category": "Technology",
+    "source": "Hacker News"
+  },
+  {
+    "url": "https://www.ycombinator.com/blog/feed",
+    "category": "Technology",
+    "source": "Y Combinator"
+  },
+  {
+    "url": "https://github.blog/feed/",
+    "category": "Technology",
+    "source": "GitHub Blog"
+  },
+  {
+    "url": "https://a16z.com/feed/",
+    "category": "Technology",
+    "source": "Andreessen Horowitz"
+  },
+  {
+    "url": "https://finance.yahoo.com/news/rssindex",
+    "category": "US Stocks",
+    "source": "Yahoo Finance"
+  },
+  {
+    "url": "https://www.cnbc.com/id/10000664/device/rss/rss.html",
+    "category": "US Stocks",
+    "source": "CNBC Markets"
+  },
+  {
+    "url": "https://feeds.marketwatch.com/marketwatch/topstories/",
+    "category": "US Stocks",
+    "source": "MarketWatch"
+  },
+  {
+    "url": "https://www.reuters.com/business/feed/",
+    "category": "US Stocks",
+    "source": "Reuters Business"
+  },
+  {
+    "url": "https://seekingalpha.com/feed.xml",
+    "category": "US Stocks",
+    "source": "Seeking Alpha"
+  },
+  {
+    "url": "https://www.cnbc.com/id/20910258/device/rss/rss.html",
+    "category": "US Economy",
+    "source": "CNBC Economy"
+  },
+  {
+    "url": "https://www.investing.com/rss/news_25.rss",
+    "category": "US Economy",
+    "source": "Investing.com"
+  },
+  {
+    "url": "https://www.economist.com/finance-and-economics/rss.xml",
+    "category": "US Economy",
+    "source": "The Economist"
+  },
+  {
+    "url": "https://www.forbes.com/business/feed/",
+    "category": "US Economy",
+    "source": "Forbes Economics"
+  },
+  {
+    "url": "https://36kr.com/feed",
+    "category": "Technology",
+    "source": "36Kr"
+  },
+  {
+    "url": "https://www.huxiu.com/rss/0.xml",
+    "category": "Technology",
+    "source": "Huxiu"
+  },
+  {
+    "url": "https://www.ft.com/rss/home",
+    "category": "US Economy",
+    "source": "Financial Times"
+  },
+  {
+    "url": "https://www.producthunt.com/feed",
+    "category": "Technology",
+    "source": "Product Hunt"
+  }
 ]

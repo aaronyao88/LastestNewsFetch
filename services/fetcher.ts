@@ -2,6 +2,7 @@ import Parser from 'rss-parser';
 import { NewsItem, Category } from '@/types';
 import fs from 'fs';
 import path from 'path';
+import { fetchWeChatNews } from './wechat-fetcher';
 // import { fetchTwitterNews } from './twitter-fetcher';
 
 const parser = new Parser({
@@ -97,6 +98,16 @@ export async function fetchNews(targetDate?: Date): Promise<NewsItem[]> {
 
     // Merge Twitter items
     // newsItems.push(...twitterItems);
+
+    // Fetch from WeChat
+    try {
+        console.log('正在抓取微信公众号...');
+        const wechatItems = await fetchWeChatNews('晚点LatePost');
+        console.log(`微信抓取完成: ${wechatItems.length} 条`);
+        newsItems.push(...wechatItems);
+    } catch (error) {
+        console.error('微信抓取失败:', error);
+    }
 
     return newsItems;
 }

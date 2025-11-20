@@ -56,19 +56,19 @@ export function TriggerButton() {
         : 0;
 
     return (
-        <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2">
+        <div className="flex flex-col gap-2 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                 <input
                     type="date"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                     disabled={loading}
-                    className="px-3 py-2 border rounded text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                    className="px-3 py-2 border rounded text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 w-full sm:w-auto"
                 />
                 <button
                     onClick={handleTrigger}
                     disabled={loading}
-                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition disabled:opacity-50 text-sm whitespace-nowrap"
+                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition disabled:opacity-50 text-sm whitespace-nowrap w-full sm:w-auto"
                 >
                     {loading ? '生成中...' : '生成报告'}
                 </button>
@@ -77,8 +77,8 @@ export function TriggerButton() {
             {loading && progress && (
                 <div className="w-full">
                     <div className="flex justify-between text-xs text-gray-600 mb-1">
-                        <span>{progress.message}</span>
-                        <span>{percentage}%</span>
+                        <span className="truncate">{progress.message}</span>
+                        <span className="ml-2 flex-shrink-0">{percentage}%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
                         <div
