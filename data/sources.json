@@ -140,13 +140,18 @@
     "source": "Huxiu"
   },
   {
-    "url": "https://www.ft.com/rss/home",
-    "category": "US Economy",
-    "source": "Financial Times"
-  },
-  {
     "url": "https://www.producthunt.com/feed",
     "category": "Technology",
     "source": "Product Hunt"
+  },
+  {
+    "url": "https://feeds.bloomberg.com/markets/news.rss",
+    "category": "US Economy",
+    "source": "Bloomberg"
+  },
+  {
+    "url": "http://www.ft.com/rss/home",
+    "category": "US Economy",
+    "source": "FT 全球站"
   }
 ]

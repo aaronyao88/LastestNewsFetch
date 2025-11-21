@@ -2,7 +2,7 @@
 
 import { DailyReport, Category } from '@/types';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { clsx } from 'clsx';
 import Image from 'next/image';
 import { TopicBadge } from './TopicBadge';
@@ -38,13 +38,88 @@ interface ReportViewProps {
 
 export function ReportView({ report, topicsMap = {} }: ReportViewProps) {
     const [selectedCategory, setSelectedCategory] = useState<Category | 'All'>('All');
+    const [readStatus, setReadStatus] = useState<Record<string, boolean>>({});
+    const [initialReadStatus, setInitialReadStatus] = useState<Record<string, boolean> | null>(null);
+    const observerRef = useRef<IntersectionObserver | null>(null);
+    const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
-    const filteredItems = selectedCategory === 'All'
-        ? report.items
-        : report.items.filter(item => item.category === selectedCategory);
+    // Pagination & Scroll
+    const [displayCount, setDisplayCount] = useState(20);
+    const [showBackToTop, setShowBackToTop] = useState(false);
+    const loadMoreRef = useRef<HTMLDivElement>(null);
 
-    // Sort by heat index descending
-    filteredItems.sort((a, b) => b.heatIndex - a.heatIndex);
+    // Reset pagination on category change
+    useEffect(() => {
+        setDisplayCount(20);
+        window.scrollTo({ top: 0, behavior: 'auto' });
+    }, [selectedCategory]);
+
+    // Back to top listener
+    useEffect(() => {
+        const handleScroll = () => setShowBackToTop(window.scrollY > 500);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    // Fetch initial read status
+    useEffect(() => {
+        fetch('/api/read-status')
+            .then(res => res.json())
+            .then(data => {
+                setReadStatus(data);
+                setInitialReadStatus(data);
+            })
+            .catch(err => console.error('Failed to fetch read status:', err));
+    }, []);
+
+    const filteredItems = useMemo(() => {
+        let items = selectedCategory === 'All'
+            ? report.items
+            : report.items.filter(item => item.category === selectedCategory);
+
+        // Clone to avoid mutating original
+        items = [...items];
+
+        items.sort((a, b) => {
+            // Use initial snapshot for stable sorting
+            const statusMap = initialReadStatus || {};
+            const isReadA = !!statusMap[a.id];
+            const isReadB = !!statusMap[b.id];
+
+            // 1. Unread first
+            if (isReadA !== isReadB) {
+                return isReadA ? 1 : -1;
+            }
+
+            // 2. Heat index descending
+            return b.heatIndex - a.heatIndex;
+        });
+
+        return items;
+    }, [selectedCategory, report.items, initialReadStatus]);
+
+    const visibleItems = useMemo(() => {
+        return filteredItems.slice(0, displayCount);
+    }, [filteredItems, displayCount]);
+
+    // Infinite Scroll Observer
+    useEffect(() => {
+        const observer = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting && displayCount < filteredItems.length) {
+                setDisplayCount(prev => prev + 20);
+            }
+        }, { threshold: 0.1, rootMargin: '100px' });
+
+        if (loadMoreRef.current) {
+            observer.observe(loadMoreRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, [filteredItems.length, displayCount]);
 
     // Calculate counts
     const counts = report.items.reduce((acc, item) => {
@@ -63,6 +138,58 @@ export function ReportView({ report, topicsMap = {} }: ReportViewProps) {
         }
         return num.toString();
     };
+
+
+
+
+    // Setup Intersection Observer
+    useEffect(() => {
+        if (observerRef.current) {
+            observerRef.current.disconnect();
+        }
+
+        observerRef.current = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('data-id');
+                    if (id) {
+                        // Mark as read locally immediately
+                        setReadStatus(prev => {
+                            if (prev[id]) return prev; // Already read
+
+                            console.log(`Marking item ${id} as read`);
+                            // Sync to server
+                            fetch('/api/read-status', {
+                                method: 'POST',
+                                body: JSON.stringify({ id }),
+                                headers: { 'Content-Type': 'application/json' }
+                            }).catch(console.error);
+
+                            return { ...prev, [id]: true };
+                        });
+
+                        // Stop observing once read
+                        observerRef.current?.unobserve(entry.target);
+                    }
+                }
+            });
+        }, { threshold: 0.05 }); // Lower threshold to ensure long items trigger read status
+
+        // Observe all current items that are not read yet (or just all, and let logic handle it)
+        // Actually, better to observe all, and unobserve inside callback.
+        // But we need to re-attach when filteredItems changes.
+        itemRefs.current.forEach((el, id) => {
+            if (el && !readStatus[id]) {
+                observerRef.current?.observe(el);
+            }
+        });
+
+        return () => {
+            if (observerRef.current) {
+                observerRef.current.disconnect();
+            }
+        };
+    }, [visibleItems]); // Re-run when visible list changes
 
     return (
         <div className="max-w-4xl mx-auto px-4 sm:px-6 bg-white shadow-lg rounded-lg">
@@ -125,160 +252,206 @@ export function ReportView({ report, topicsMap = {} }: ReportViewProps) {
 
             {/* Main News Items */}
             <div className="space-y-4 sm:space-y-6 mb-8 sm:mb-12 px-4 sm:px-0">
-                {filteredItems.length === 0 ? (
+                {visibleItems.length === 0 ? (
                     <p className="text-gray-500 text-center py-8">该分类下暂无内容。</p>
                 ) : (
-                    filteredItems.map((item, index) => (
-                        <div key={item.id} className="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow relative">
-                            {/* Header: Title & Heat */}
-                            <div className="bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 flex justify-between items-start gap-3 sm:gap-4">
-                                <div className="flex-grow min-w-0">
-                                    <div className="flex items-center gap-2 sm:gap-3 mb-2">
-                                        {/* Source Icon */}
-                                        <div className="flex-shrink-0 relative group">
-                                            <img
-                                                src={getSourceIcon(item.source, item.url)}
-                                                alt={item.source}
-                                                title={item.source}
-                                                className="w-6 h-6 sm:w-7 sm:h-7 rounded cursor-help transition-transform group-hover:scale-110"
-                                                onError={(e) => {
-                                                    // 如果图标加载失败，使用文字缩写
-                                                    e.currentTarget.style.display = 'none';
-                                                    const parent = e.currentTarget.parentElement;
-                                                    if (parent && !parent.querySelector('.source-fallback')) {
-                                                        const fallback = document.createElement('div');
-                                                        fallback.className = `source-fallback w-6 h-6 sm:w-7 sm:h-7 rounded flex items-center justify-center text-white text-xs font-bold ${getSourceColor(item.source)} cursor-help transition-transform group-hover:scale-110`;
-                                                        fallback.title = item.source;
-                                                        fallback.textContent = item.source.substring(0, 2).toUpperCase();
-                                                        parent.appendChild(fallback);
-                                                    }
-                                                }}
-                                            />
-                                            {/* Tooltip */}
-                                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-gray-900 text-white text-sm rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-lg">
-                                                {item.source}
-                                                <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
-                                            </div>
-                                        </div>
-                                        <h2 className="text-lg sm:text-2xl font-bold text-gray-900 leading-tight">
-                                            {item.title}
-                                        </h2>
-                                    </div>
-                                    <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-                                        <span className="inline-flex items-center px-2 sm:px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                            {item.category}
-                                        </span>
-
-                                        {/* Topic Badges */}
-                                        {item.matchedTopics && item.matchedTopics.length > 0 && (
-                                            <>
-                                                {item.matchedTopics.map(topicId => {
-                                                    const topic = topicsMap[topicId];
-                                                    if (!topic) return null;
-                                                    return (
-                                                        <TopicBadge
-                                                            key={topicId}
-                                                            topicId={topicId}
-                                                            topicName={topic.name}
-                                                            topicColor={topic.color}
-                                                        />
-                                                    );
-                                                })}
-                                            </>
-                                        )}
-                                    </div>
+                    visibleItems.map((item, index) => {
+                        const isRead = readStatus[item.id];
+                        return (
+                            <div
+                                key={item.id}
+                                data-id={item.id}
+                                ref={el => {
+                                    if (el) itemRefs.current.set(item.id, el);
+                                    else itemRefs.current.delete(item.id);
+                                }}
+                                className={clsx(
+                                    "bg-white border rounded-xl shadow-sm transition-all relative duration-500",
+                                    isRead ? "border-gray-200" : "border-blue-200 shadow-md ring-1 ring-blue-100"
+                                )}
+                            >
+                                {/* Read Status Indicator */}
+                                <div className={clsx(
+                                    "absolute top-0 right-0 px-3 py-1 rounded-bl-xl rounded-tr-xl text-xs font-bold z-10 transition-colors duration-500",
+                                    isRead ? "bg-gray-100 text-gray-400" : "bg-blue-600 text-white"
+                                )}>
+                                    {isRead ? '已读' : '未读'}
                                 </div>
-                                {/* Heat Index Badge */}
-                                <div className="flex-shrink-0 flex flex-col items-end">
-                                    <div className="bg-gradient-to-br from-red-500 to-orange-500 text-white rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 shadow-md">
-                                        <div className="text-xs font-medium opacity-90 hidden sm:block">热度指数</div>
-                                        <div className="text-base sm:text-xl font-bold flex items-center gap-1">
-                                            {formatHeatIndex(item.heatIndex)}
+
+                                {/* Header: Title & Heat */}
+                                <div className={clsx(
+                                    "px-4 sm:px-6 py-3 sm:py-4 border-b flex justify-between items-start gap-3 sm:gap-4 transition-colors duration-500",
+                                    isRead ? "bg-gray-50 border-gray-100" : "bg-blue-50/30 border-blue-100"
+                                )}>
+                                    <div className="flex-grow min-w-0">
+                                        <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                                            {/* Source Icon */}
+                                            <div className="flex-shrink-0 relative group">
+                                                <img
+                                                    src={getSourceIcon(item.source, item.url)}
+                                                    alt={item.source}
+                                                    title={item.source}
+                                                    className="w-6 h-6 sm:w-7 sm:h-7 rounded cursor-help transition-all group-hover:scale-110"
+                                                    onError={(e) => {
+                                                        // 如果图标加载失败，使用文字缩写
+                                                        e.currentTarget.style.display = 'none';
+                                                        const parent = e.currentTarget.parentElement;
+                                                        if (parent && !parent.querySelector('.source-fallback')) {
+                                                            const fallback = document.createElement('div');
+                                                            fallback.className = `source-fallback w-6 h-6 sm:w-7 sm:h-7 rounded flex items-center justify-center text-white text-xs font-bold ${getSourceColor(item.source)} cursor-help transition-transform group-hover:scale-110`;
+                                                            fallback.title = item.source;
+                                                            fallback.textContent = item.source.substring(0, 2).toUpperCase();
+                                                            parent.appendChild(fallback);
+                                                        }
+                                                    }}
+                                                />
+                                                {/* Tooltip */}
+                                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-gray-900 text-white text-sm rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-lg">
+                                                    {item.source}
+                                                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                                </div>
+                                            </div>
+                                            <h2 className="text-lg sm:text-2xl font-bold leading-tight text-gray-900">
+                                                {item.title}
+                                            </h2>
+                                        </div>
+                                        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                                            <span className="inline-flex items-center px-2 sm:px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                {item.category}
+                                            </span>
+
+                                            {/* Topic Badges */}
                                             {item.matchedTopics && item.matchedTopics.length > 0 && (
-                                                <span className="text-xs sm:text-sm">↑</span>
+                                                <>
+                                                    {item.matchedTopics.map(topicId => {
+                                                        const topic = topicsMap[topicId];
+                                                        if (!topic) return null;
+                                                        return (
+                                                            <TopicBadge
+                                                                key={topicId}
+                                                                topicId={topicId}
+                                                                topicName={topic.name}
+                                                                topicColor={topic.color}
+                                                            />
+                                                        );
+                                                    })}
+                                                </>
                                             )}
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            {/* Body Content */}
-                            <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">
-
-                                {/* 1) Summary */}
-                                <div>
-                                    <h3 className="text-sm sm:text-base font-bold text-gray-900 uppercase tracking-wider mb-2 flex items-center gap-2">
-                                        <span className="w-1 h-4 bg-blue-500 rounded-full"></span>
-                                        1) 内容总结
-                                    </h3>
-                                    <p className="text-sm sm:text-base text-gray-700 leading-relaxed text-justify">
-                                        {renderHighlightedText(item.summary)}
-                                    </p>
+                                    {/* Heat Index Badge */}
+                                    <div className="flex-shrink-0 flex flex-col items-end">
+                                        <div className="bg-gradient-to-br from-red-500 to-orange-500 text-white rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 shadow-md transition-all duration-500">
+                                            <div className="text-xs font-medium opacity-90 hidden sm:block">热度指数</div>
+                                            <div className="text-base sm:text-xl font-bold flex items-center gap-1">
+                                                {formatHeatIndex(item.heatIndex)}
+                                                {item.matchedTopics && item.matchedTopics.length > 0 && (
+                                                    <span className="text-xs sm:text-sm">↑</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                {/* 2) Market Reaction */}
-                                {item.marketReaction && (
+                                {/* Body Content */}
+                                <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">
+
+                                    {/* 1) Summary */}
                                     <div>
                                         <h3 className="text-sm sm:text-base font-bold text-gray-900 uppercase tracking-wider mb-2 flex items-center gap-2">
-                                            <span className="w-1 h-4 bg-purple-500 rounded-full"></span>
-                                            2) 市场反应
+                                            <span className="w-1 h-4 bg-blue-500 rounded-full"></span>
+                                            1) 内容总结
                                         </h3>
-                                        <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                                            {renderHighlightedText(item.marketReaction)}
+                                        <p className="text-sm sm:text-base text-gray-700 leading-relaxed text-justify">
+                                            {renderHighlightedText(item.summary)}
                                         </p>
                                     </div>
-                                )}
 
-                                {/* 3) Date */}
-                                <div>
-                                    <h3 className="text-sm sm:text-base font-bold text-gray-900 uppercase tracking-wider mb-1 flex items-center gap-2">
-                                        <span className="w-1 h-4 bg-green-500 rounded-full"></span>
-                                        3) 发布时间
-                                    </h3>
-                                    <p className="text-gray-600 text-xs sm:text-sm font-mono break-all">
-                                        {new Date(item.publishDate).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', hour12: false })} (北京时间)
-                                    </p>
-                                </div>
+                                    {/* 2) Market Reaction */}
+                                    {item.marketReaction && (
+                                        <div>
+                                            <h3 className="text-sm sm:text-base font-bold text-gray-900 uppercase tracking-wider mb-2 flex items-center gap-2">
+                                                <span className="w-1 h-4 bg-purple-500 rounded-full"></span>
+                                                2) 市场反应
+                                            </h3>
+                                            <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                                                {renderHighlightedText(item.marketReaction)}
+                                            </p>
+                                        </div>
+                                    )}
 
-                                {/* 4) Comments */}
-                                {item.comments && item.comments.length > 0 && (
+                                    {/* 3) Date */}
+                                    <div>
+                                        <h3 className="text-sm sm:text-base font-bold text-gray-900 uppercase tracking-wider mb-1 flex items-center gap-2">
+                                            <span className="w-1 h-4 bg-green-500 rounded-full"></span>
+                                            3) 发布时间
+                                        </h3>
+                                        <p className="text-gray-600 text-xs sm:text-sm font-mono break-all">
+                                            {new Date(item.publishDate).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', hour12: false })} (北京时间)
+                                        </p>
+                                    </div>
+
+                                    {/* 4) Comments */}
+                                    {item.comments && item.comments.length > 0 && (
+                                        <div>
+                                            <h3 className="text-sm sm:text-base font-bold text-gray-900 uppercase tracking-wider mb-2 flex items-center gap-2">
+                                                <span className="w-1 h-4 bg-orange-500 rounded-full"></span>
+                                                4) 热点评论
+                                            </h3>
+                                            <ul className="space-y-2">
+                                                {item.comments.slice(0, 5).map((c, i) => (
+                                                    <li key={i} className="flex gap-2 text-gray-700 text-sm sm:text-base bg-gray-50 p-2 sm:p-3 rounded">
+                                                        <span className="text-gray-400 font-mono select-none">{i + 1}.</span>
+                                                        <span>{c}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+
+                                    {/* 5) Link */}
                                     <div>
                                         <h3 className="text-sm sm:text-base font-bold text-gray-900 uppercase tracking-wider mb-2 flex items-center gap-2">
-                                            <span className="w-1 h-4 bg-orange-500 rounded-full"></span>
-                                            4) 热点评论
+                                            <span className="w-1 h-4 bg-gray-500 rounded-full"></span>
+                                            5) 相关链接
                                         </h3>
-                                        <ul className="space-y-2">
-                                            {item.comments.slice(0, 5).map((c, i) => (
-                                                <li key={i} className="flex gap-2 text-gray-700 text-sm sm:text-base bg-gray-50 p-2 sm:p-3 rounded">
-                                                    <span className="text-gray-400 font-mono select-none">{i + 1}.</span>
-                                                    <span>{c}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
+                                        <Link
+                                            href={item.url}
+                                            target="_blank"
+                                            className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 hover:underline break-all text-xs sm:text-sm font-medium"
+                                        >
+                                            {item.url}
+                                            <svg className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                        </Link>
                                     </div>
-                                )}
 
-                                {/* 5) Link */}
-                                <div>
-                                    <h3 className="text-sm sm:text-base font-bold text-gray-900 uppercase tracking-wider mb-2 flex items-center gap-2">
-                                        <span className="w-1 h-4 bg-gray-500 rounded-full"></span>
-                                        5) 相关链接
-                                    </h3>
-                                    <Link
-                                        href={item.url}
-                                        target="_blank"
-                                        className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 hover:underline break-all text-xs sm:text-sm font-medium"
-                                    >
-                                        {item.url}
-                                        <svg className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                                    </Link>
                                 </div>
-
                             </div>
-                        </div>
-                    ))
+                        );
+                    })
                 )}
             </div>
+
+            {/* Load More Sentinel */}
+            {filteredItems.length > displayCount && (
+                <div ref={loadMoreRef} className="py-8 text-center text-gray-400 text-sm">
+                    正在加载更多新闻...
+                </div>
+            )}
+
+            {/* Back To Top Button */}
+            <button
+                onClick={scrollToTop}
+                className={clsx(
+                    "fixed bottom-8 right-8 p-3 rounded-full bg-blue-600 text-white shadow-lg transition-all duration-300 z-50 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500",
+                    showBackToTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
+                )}
+                aria-label="Back to top"
+            >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                </svg>
+            </button>
 
             {/* Shorts Section */}
             {report.shorts && report.shorts.length > 0 && (
