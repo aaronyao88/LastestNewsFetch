@@ -150,8 +150,8 @@
     "source": "Bloomberg"
   },
   {
-    "url": "http://www.ft.com/rss/home",
-    "category": "US Economy",
-    "source": "FT 全球站"
+    "url": "https://feeds.content.dowjones.io/public/rss/RSSMarketsMain",
+    "category": "US Stocks",
+    "source": "华尔街市场与金融"
   }
 ]

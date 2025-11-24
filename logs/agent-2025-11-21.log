@@ -1,0 +1,341 @@
+[2025-11-21T10:28:24.340Z] [Agent] Creating Initial Plan for: FT
+[2025-11-21T10:28:25.670Z] [Agent Plan] Initial Plan: Search for "FT RSS feed" -> Search for "Financial Times RSS" -> Search for "FT.com RSS" -> Extract candidate RSS URLs from top results -> Validate each URL by fetching and checking for valid RSS/XML structure -> If no valid feed found, try common paths like /rss, /feeds, /feed.xml on ft.com -> Return the first working RSS feed URL
+[2025-11-21T10:28:26.171Z] [ReAct] Decided action: search
+[2025-11-21T10:28:26.172Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:28:26.174Z] [Agent] Executing Search for: FT
+[2025-11-21T10:28:30.205Z] [Agent] Found 8 search results
+[2025-11-21T10:28:30.887Z] [ReAct] Decided action: extract
+[2025-11-21T10:28:30.888Z] [Agent Thought] Based on history, decided to: extract
+[2025-11-21T10:28:30.893Z] [Agent] Executing Extraction...
+[2025-11-21T10:28:31.911Z] [Agent] Extracted 5 candidates
+[2025-11-21T10:28:32.436Z] [ReAct] Decided action: validate
+[2025-11-21T10:28:32.436Z] [Agent Thought] Based on history, decided to: validate
+[2025-11-21T10:28:32.438Z] [Agent] Executing Validation on 5 candidates...
+[2025-11-21T10:28:32.438Z] [Agent] Checking https://www.ft.com/rss/home
+[2025-11-21T10:28:37.440Z] [Agent] Checking https://www.ft.com/?format=rss
+[2025-11-21T10:28:42.445Z] [Agent] Checking https://www.ft.com/rss
+[2025-11-21T10:28:47.451Z] [Agent] Checking https://www.ft.com/feed
+[2025-11-21T10:28:52.453Z] [Agent] Checking https://www.ft.com/feeds
+[2025-11-21T10:28:57.456Z] [Agent] Validation failed. No valid feed found.
+[2025-11-21T10:28:58.141Z] [ReAct] Decided action: search
+[2025-11-21T10:28:58.141Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:28:58.143Z] [Agent] Executing Search for: FT
+[2025-11-21T10:29:01.557Z] [Agent] Found 8 search results
+[2025-11-21T10:29:02.102Z] [ReAct] Decided action: search
+[2025-11-21T10:29:02.102Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:29:02.103Z] [Agent] Executing Search for: FT
+[2025-11-21T10:29:05.269Z] [Agent] Found 8 search results
+[2025-11-21T10:29:05.854Z] [ReAct] Decided action: search
+[2025-11-21T10:29:05.854Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:29:05.855Z] [Agent] Executing Search for: FT
+[2025-11-21T10:29:09.031Z] [Agent] Found 8 search results
+[2025-11-21T10:29:09.666Z] [ReAct] Decided action: validate
+[2025-11-21T10:29:09.667Z] [Agent Thought] Based on history, decided to: validate
+[2025-11-21T10:29:09.668Z] [Agent] Executing Validation on 5 candidates...
+[2025-11-21T10:29:09.668Z] [Agent] Checking https://www.ft.com/rss/home
+[2025-11-21T10:29:14.669Z] [Agent] Checking https://www.ft.com/?format=rss
+[2025-11-21T10:29:19.672Z] [Agent] Checking https://www.ft.com/rss
+[2025-11-21T10:29:24.674Z] [Agent] Checking https://www.ft.com/feed
+[2025-11-21T10:29:29.676Z] [Agent] Checking https://www.ft.com/feeds
+[2025-11-21T10:29:34.679Z] [Agent] Validation failed. No valid feed found.
+[2025-11-21T10:29:35.422Z] [ReAct] Decided action: search
+[2025-11-21T10:29:35.422Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:29:35.423Z] [Agent] Executing Search for: FT
+[2025-11-21T10:29:39.111Z] [Agent] Found 8 search results
+[2025-11-21T10:29:39.797Z] [ReAct] Decided action: validate
+[2025-11-21T10:29:39.797Z] [Agent Thought] Based on history, decided to: validate
+[2025-11-21T10:29:39.798Z] [Agent] Executing Validation on 5 candidates...
+[2025-11-21T10:29:39.799Z] [Agent] Checking https://www.ft.com/rss/home
+[2025-11-21T10:29:44.801Z] [Agent] Checking https://www.ft.com/?format=rss
+[2025-11-21T10:29:49.804Z] [Agent] Checking https://www.ft.com/rss
+[2025-11-21T10:29:54.806Z] [Agent] Checking https://www.ft.com/feed
+[2025-11-21T10:29:59.809Z] [Agent] Checking https://www.ft.com/feeds
+[2025-11-21T10:30:04.812Z] [Agent] Validation failed. No valid feed found.
+[2025-11-21T10:30:05.572Z] [ReAct] Decided action: validate
+[2025-11-21T10:30:05.573Z] [Agent Thought] Based on history, decided to: validate
+[2025-11-21T10:30:05.574Z] [Agent] Executing Validation on 5 candidates...
+[2025-11-21T10:30:05.574Z] [Agent] Checking https://www.ft.com/rss/home
+[2025-11-21T10:30:10.576Z] [Agent] Checking https://www.ft.com/?format=rss
+[2025-11-21T10:30:15.580Z] [Agent] Checking https://www.ft.com/rss
+[2025-11-21T10:30:20.583Z] [Agent] Checking https://www.ft.com/feed
+[2025-11-21T10:30:25.585Z] [Agent] Checking https://www.ft.com/feeds
+[2025-11-21T10:30:30.588Z] [Agent] Validation failed. No valid feed found.
+[2025-11-21T10:30:31.476Z] [ReAct] Decided action: search
+[2025-11-21T10:30:31.476Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:30:31.477Z] [Agent] Executing Search for: FT
+[2025-11-21T10:30:40.359Z] [Agent] Found 7 search results
+[2025-11-21T10:30:40.999Z] [ReAct] Decided action: validate
+[2025-11-21T10:30:41.000Z] [Agent Thought] Based on history, decided to: validate
+[2025-11-21T10:30:41.002Z] [Agent] Executing Validation on 5 candidates...
+[2025-11-21T10:30:41.002Z] [Agent] Checking https://www.ft.com/rss/home
+[2025-11-21T10:30:46.004Z] [Agent] Checking https://www.ft.com/?format=rss
+[2025-11-21T10:30:51.007Z] [Agent] Checking https://www.ft.com/rss
+[2025-11-21T10:30:56.009Z] [Agent] Checking https://www.ft.com/feed
+[2025-11-21T10:31:01.012Z] [Agent] Checking https://www.ft.com/feeds
+[2025-11-21T10:31:06.016Z] [Agent] Validation failed. No valid feed found.
+[2025-11-21T10:34:22.990Z] [Agent] Creating Initial Plan for: wallstreet
+[2025-11-21T10:34:24.556Z] [Agent Plan] Initial Plan: Search for "wallstreet RSS" and "wallstreet feed" -> Search for "Wall Street Journal RSS" and "WSJ RSS" -> Search for "wallstreetbets RSS" and "r/wallstreetbets RSS" -> Extract candidate RSS URLs from top search results -> Validate each URL by fetching and checking for valid RSS/XML structure -> If none valid, retry with broader terms like "finance RSS" and filter for wallstreet-related feeds
+[2025-11-21T10:34:25.129Z] [ReAct] Decided action: search
+[2025-11-21T10:34:25.129Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:34:25.131Z] [Agent] Executing Search for: wallstreet
+[2025-11-21T10:34:39.732Z] [Agent] Found 7 search results
+[2025-11-21T10:34:40.506Z] [ReAct] Decided action: extract
+[2025-11-21T10:34:40.506Z] [Agent Thought] Based on history, decided to: extract
+[2025-11-21T10:34:40.507Z] [Agent] Executing Extraction...
+[2025-11-21T10:34:41.844Z] [Agent] Extracted 5 candidates
+[2025-11-21T10:34:42.393Z] [ReAct] Decided action: validate
+[2025-11-21T10:34:42.393Z] [Agent Thought] Based on history, decided to: validate
+[2025-11-21T10:34:42.395Z] [Agent] Executing Validation on 5 candidates...
+[2025-11-21T10:34:42.395Z] [Agent] Checking https://wallstreetcn.com/rss
+[2025-11-21T10:34:47.396Z] [Agent] Checking https://feeds.wsjonline.com/wsj/rss
+[2025-11-21T10:34:48.210Z] [Agent] Checking https://www.wsj.com/xml/rss/3_7011.xml
+[2025-11-21T10:34:48.656Z] [Agent] Checking https://www.wsj.com/xml/rss/3_7085.xml
+[2025-11-21T10:34:49.005Z] [Agent] Checking https://www.coindesk.com/feed/
+[2025-11-21T10:34:54.007Z] [Agent] Validation failed. No valid feed found.
+[2025-11-21T10:34:54.661Z] [ReAct] Decided action: search
+[2025-11-21T10:34:54.661Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:34:54.662Z] [Agent] Executing Search for: wallstreet
+[2025-11-21T10:35:06.994Z] [Agent] Found 7 search results
+[2025-11-21T10:35:07.632Z] [ReAct] Decided action: extract
+[2025-11-21T10:35:07.633Z] [Agent Thought] Based on history, decided to: extract
+[2025-11-21T10:35:07.635Z] [Agent] Executing Extraction...
+[2025-11-21T10:35:09.173Z] [Agent] Extracted 7 candidates
+[2025-11-21T10:35:09.715Z] [ReAct] Decided action: validate
+[2025-11-21T10:35:09.716Z] [Agent Thought] Based on history, decided to: validate
+[2025-11-21T10:35:09.717Z] [Agent] Executing Validation on 12 candidates...
+[2025-11-21T10:35:09.718Z] [Agent] Checking https://wallstreetcn.com/rss
+[2025-11-21T10:35:10.135Z] [Agent] Checking https://feeds.wsjonline.com/wsj/rss
+[2025-11-21T10:35:10.912Z] [Agent] Checking https://www.wsj.com/xml/rss/3_7011.xml
+[2025-11-21T10:35:11.231Z] [Agent] Checking https://www.wsj.com/xml/rss/3_7085.xml
+[2025-11-21T10:35:11.581Z] [Agent] Checking https://www.coindesk.com/feed/
+[2025-11-21T10:35:16.582Z] [Agent] Checking https://wallstreetcn.com/rss
+[2025-11-21T10:35:21.585Z] [Agent] Checking https://wallstreetcn.com/feed
+[2025-11-21T10:35:26.588Z] [Agent] Checking https://feeds.wsjonline.com/wsj/rss
+[2025-11-21T10:35:27.234Z] [Agent] Checking https://www.wsj.com/xml/rss/3_7041.xml
+[2025-11-21T10:35:27.530Z] [Agent] Checking https://www.wsj.com/xml/rss/3_7085.xml
+[2025-11-21T10:35:27.880Z] [Agent] Checking https://www.coindesk.com/feed
+[2025-11-21T10:35:32.882Z] [Agent] Checking https://www.coindesk.com/rss
+[2025-11-21T10:35:37.886Z] [Agent] Validation failed. No valid feed found.
+[2025-11-21T10:35:38.538Z] [ReAct] Decided action: search
+[2025-11-21T10:35:38.539Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:35:38.542Z] [Agent] Executing Search for: wallstreet
+[2025-11-21T10:35:48.996Z] [Agent] Found 7 search results
+[2025-11-21T10:35:49.771Z] [ReAct] Decided action: extract
+[2025-11-21T10:35:49.772Z] [Agent Thought] Based on history, decided to: extract
+[2025-11-21T10:35:49.773Z] [Agent] Executing Extraction...
+[2025-11-21T10:35:51.523Z] [Agent] Extracted 4 candidates
+[2025-11-21T10:35:52.040Z] [ReAct] Decided action: validate
+[2025-11-21T10:35:52.041Z] [Agent Thought] Based on history, decided to: validate
+[2025-11-21T10:35:52.043Z] [Agent] Executing Validation on 16 candidates...
+[2025-11-21T10:35:52.044Z] [Agent] Checking https://wallstreetcn.com/rss
+[2025-11-21T10:35:57.045Z] [Agent] Checking https://feeds.wsjonline.com/wsj/rss
+[2025-11-21T10:35:57.644Z] [Agent] Checking https://www.wsj.com/xml/rss/3_7011.xml
+[2025-11-21T10:35:57.966Z] [Agent] Checking https://www.wsj.com/xml/rss/3_7085.xml
+[2025-11-21T10:35:58.360Z] [Agent] Checking https://www.coindesk.com/feed/
+[2025-11-21T10:36:03.361Z] [Agent] Checking https://wallstreetcn.com/rss
+[2025-11-21T10:36:03.803Z] [Agent] Checking https://wallstreetcn.com/feed
+[2025-11-21T10:36:08.804Z] [Agent] Checking https://feeds.wsjonline.com/wsj/rss
+[2025-11-21T10:36:09.419Z] [Agent] Checking https://www.wsj.com/xml/rss/3_7041.xml
+[2025-11-21T10:36:09.814Z] [Agent] Checking https://www.wsj.com/xml/rss/3_7085.xml
+[2025-11-21T10:36:10.087Z] [Agent] Checking https://www.coindesk.com/feed
+[2025-11-21T10:36:15.087Z] [Agent] Checking https://www.coindesk.com/rss
+[2025-11-21T10:36:20.090Z] [Agent] Checking https://wallstreetcn.com/rss
+[2025-11-21T10:36:25.093Z] [Agent] Checking https://feeds.wsjonline.com/wsj/rss
+[2025-11-21T10:36:25.934Z] [Agent] Checking https://www.wsj.com/xml/rss/3_7041.xml
+[2025-11-21T10:36:26.285Z] [Agent] Checking https://www.coindesk.com/feed/
+[2025-11-21T10:36:31.286Z] [Agent] Validation failed. No valid feed found.
+[2025-11-21T10:36:32.019Z] [ReAct] Decided action: search
+[2025-11-21T10:36:32.020Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:36:32.023Z] [Agent] Executing Search for: wallstreet
+[2025-11-21T10:36:43.137Z] [Agent] Found 7 search results
+[2025-11-21T10:36:44.404Z] [ReAct] Decided action: extract
+[2025-11-21T10:36:44.404Z] [Agent Thought] Based on history, decided to: extract
+[2025-11-21T10:36:44.406Z] [Agent] Executing Extraction...
+[2025-11-21T10:36:46.535Z] [Agent] Extracted 7 candidates
+[2025-11-21T10:36:47.048Z] [ReAct] Decided action: validate
+[2025-11-21T10:36:47.049Z] [Agent Thought] Based on history, decided to: validate
+[2025-11-21T10:36:47.050Z] [Agent] Executing Validation on 23 candidates...
+[2025-11-21T10:36:47.050Z] [Agent] Checking https://wallstreetcn.com/rss
+[2025-11-21T10:36:47.469Z] [Agent] Checking https://feeds.wsjonline.com/wsj/rss
+[2025-11-21T10:36:48.312Z] [Agent] Checking https://www.wsj.com/xml/rss/3_7011.xml
+[2025-11-21T10:36:48.614Z] [Agent] Checking https://www.wsj.com/xml/rss/3_7085.xml
+[2025-11-21T10:36:49.002Z] [Agent] Checking https://www.coindesk.com/feed/
+[2025-11-21T10:36:54.005Z] [Agent] Checking https://wallstreetcn.com/rss
+[2025-11-21T10:36:54.466Z] [Agent] Checking https://wallstreetcn.com/feed
+[2025-11-21T10:36:54.886Z] [Agent] Checking https://feeds.wsjonline.com/wsj/rss
+[2025-11-21T10:36:55.709Z] [Agent] Checking https://www.wsj.com/xml/rss/3_7041.xml
+[2025-11-21T10:36:56.061Z] [Agent] Checking https://www.wsj.com/xml/rss/3_7085.xml
+[2025-11-21T10:36:56.421Z] [Agent] Checking https://www.coindesk.com/feed
+[2025-11-21T10:37:01.424Z] [Agent] Checking https://www.coindesk.com/rss
+[2025-11-21T10:37:06.426Z] [Agent] Checking https://wallstreetcn.com/rss
+[2025-11-21T10:37:06.877Z] [Agent] Checking https://feeds.wsjonline.com/wsj/rss
+[2025-11-21T10:37:07.759Z] [Agent] Checking https://www.wsj.com/xml/rss/3_7041.xml
+[2025-11-21T10:37:08.120Z] [Agent] Checking https://www.coindesk.com/feed/
+[2025-11-21T10:37:13.122Z] [Agent] Checking https://wallstreetcn.com/rss
+[2025-11-21T10:37:13.520Z] [Agent] Checking https://wallstreetcn.com/feed
+[2025-11-21T10:37:13.924Z] [Agent] Checking https://feeds.wsjonline.com/wsj/rss
+[2025-11-21T10:37:14.791Z] [Agent] Checking https://www.wsj.com/xml/rss
+[2025-11-21T10:37:15.083Z] [Agent] Checking https://feeds.wallstreetjournal.com/rss
+[2025-11-21T10:37:15.312Z] [Agent] Checking https://www.coindesk.com/feed
+[2025-11-21T10:37:20.314Z] [Agent] Checking https://coindesk.com/rss
+[2025-11-21T10:37:25.316Z] [Agent] Validation failed. No valid feed found.
+[2025-11-21T10:45:57.041Z] [Agent] Creating Initial Plan for: FT
+[2025-11-21T10:45:58.319Z] [Agent Plan] Initial Plan: Search for "FT RSS feed" -> Search for "Financial Times RSS" -> Search for "FT.com RSS" -> Extract candidate RSS URLs from top results -> Validate each URL by fetching and checking for valid RSS/XML structure -> If no valid feed found, search for "FT news RSS" and repeat extraction/validation
+[2025-11-21T10:45:59.096Z] [ReAct] Decided action: search (Query: FT.com RSS feed)
+[2025-11-21T10:45:59.097Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:45:59.104Z] [Agent] Executing Search for: FT.com RSS feed
+[2025-11-21T10:46:13.631Z] [Agent] Found 9 search results
+[2025-11-21T10:46:14.397Z] [ReAct] Decided action: extract 
+[2025-11-21T10:46:14.398Z] [Agent Thought] Based on history, decided to: extract
+[2025-11-21T10:46:14.399Z] [Agent] Executing Extraction...
+[2025-11-21T10:46:15.734Z] [Agent] Extracted 6 candidates
+[2025-11-21T10:46:16.297Z] [ReAct] Decided action: validate 
+[2025-11-21T10:46:16.297Z] [Agent Thought] Based on history, decided to: validate
+[2025-11-21T10:46:16.299Z] [Agent] Executing Validation on 6 candidates...
+[2025-11-21T10:46:16.299Z] [Agent] Checking https://www.ft.com/rss/home
+[2025-11-21T10:46:21.302Z] [Agent] Checking https://www.ft.com/?format=rss
+[2025-11-21T10:46:26.305Z] [Agent] Checking https://www.ft.com/rss
+[2025-11-21T10:46:31.307Z] [Agent] Checking https://rss.ft.com/rss/home
+[2025-11-21T10:46:32.123Z] [Agent] Checking https://feeds.ft.com/ft/home
+[2025-11-21T10:46:37.126Z] [Agent] Checking https://www.ft.com/news/rss
+[2025-11-21T10:46:42.129Z] [Agent] Validation failed. No valid feed found.
+[2025-11-21T10:46:42.957Z] [ReAct] Decided action: search (Query: Financial Times RSS feed site:ft.com)
+[2025-11-21T10:46:42.958Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:46:42.960Z] [Agent] Executing Search for: Financial Times RSS feed site:ft.com
+[2025-11-21T10:47:14.229Z] [Agent] Found 0 search results
+[2025-11-21T10:47:15.123Z] [ReAct] Decided action: search (Query: Financial Times RSS feed site:ft.com)
+[2025-11-21T10:47:15.123Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:47:15.125Z] [Agent] Executing Search for: Financial Times RSS feed site:ft.com
+[2025-11-21T10:47:45.995Z] [Agent] Found 0 search results
+[2025-11-21T10:47:46.905Z] [ReAct] Decided action: search (Query: Financial Times RSS xml feed site:ft.com)
+[2025-11-21T10:47:46.906Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:47:46.908Z] [Agent] Executing Search for: Financial Times RSS xml feed site:ft.com
+[2025-11-21T10:48:08.735Z] [Agent] Found 0 search results
+[2025-11-21T10:48:09.917Z] [ReAct] Decided action: search (Query: Financial Times RSS feed site:ft.com)
+[2025-11-21T10:48:09.917Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:48:09.919Z] [Agent] Executing Search for: Financial Times RSS feed site:ft.com
+[2025-11-21T10:48:15.901Z] [Agent] Found 0 search results
+[2025-11-21T10:48:17.125Z] [ReAct] Decided action: search (Query: Financial Times RSS feed site:ft.com)
+[2025-11-21T10:48:17.125Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:48:17.126Z] [Agent] Executing Search for: Financial Times RSS feed site:ft.com
+[2025-11-21T10:48:21.631Z] [Agent] Found 0 search results
+[2025-11-21T10:48:22.843Z] [ReAct] Decided action: search (Query: Financial Times syndication RSS feed site:dowjones.com OR site:ft.com)
+[2025-11-21T10:48:22.844Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:48:22.846Z] [Agent] Executing Search for: Financial Times syndication RSS feed site:dowjones.com OR site:ft.com
+[2025-11-21T10:48:27.348Z] [Agent] Found 0 search results
+[2025-11-21T10:48:28.432Z] [ReAct] Decided action: search (Query: site:ft.com rss)
+[2025-11-21T10:48:28.433Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:48:28.436Z] [Agent] Executing Search for: site:ft.com rss
+[2025-11-21T10:48:33.142Z] [Agent] Found 0 search results
+[2025-11-21T10:48:34.386Z] [ReAct] Decided action: search (Query: Financial Times RSS feed site:ft.com inurl:rss)
+[2025-11-21T10:48:34.387Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:48:34.388Z] [Agent] Executing Search for: Financial Times RSS feed site:ft.com inurl:rss
+[2025-11-21T10:48:38.822Z] [Agent] Found 0 search results
+[2025-11-21T10:48:39.933Z] [ReAct] Decided action: search (Query: Financial Times RSS feed site:ft.com filetype:xml)
+[2025-11-21T10:48:39.933Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:48:39.935Z] [Agent] Executing Search for: Financial Times RSS feed site:ft.com filetype:xml
+[2025-11-21T10:48:45.093Z] [Agent] Found 0 search results
+[2025-11-21T10:51:52.302Z] [Agent] Creating Initial Plan for: FT
+[2025-11-21T10:51:54.050Z] [Agent Plan] Initial Plan: Search for "Financial Times RSS" or "FT RSS feed" -> Extract candidate RSS URLs from official FT site and reputable tech/RSS directories -> Validate each candidate URL by fetching it and checking for valid RSS/XML structure -> If no valid feed found, search for variations like "FT.com RSS", "Financial Times news feed", or site-specific queries (e.g., site:ft.com RSS) -> Re-validate any newly discovered URLs and return the first working RSS feed
+[2025-11-21T10:51:54.745Z] [ReAct] Decided action: search (Query: site:ft.com RSS feed)
+[2025-11-21T10:51:54.747Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:51:54.753Z] [Agent] Executing Search for: site:ft.com RSS feed
+[2025-11-21T10:51:58.109Z] [Agent] Found 0 search results
+[2025-11-21T10:51:59.027Z] [ReAct] Decided action: search (Query: Financial Times RSS xml feed)
+[2025-11-21T10:51:59.028Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:51:59.032Z] [Agent] Executing Search for: Financial Times RSS xml feed
+[2025-11-21T10:52:04.236Z] [Agent] Found 9 search results
+[2025-11-21T10:52:04.963Z] [ReAct] Decided action: extract 
+[2025-11-21T10:52:04.964Z] [Agent Thought] Based on history, decided to: extract
+[2025-11-21T10:52:04.967Z] [Agent] Executing Extraction...
+[2025-11-21T10:52:08.720Z] [Agent] Extracted 27 candidates
+[2025-11-21T10:52:09.263Z] [ReAct] Decided action: validate 
+[2025-11-21T10:52:09.263Z] [Agent Thought] Based on history, decided to: validate
+[2025-11-21T10:52:09.265Z] [Agent] Executing Validation on 27 candidates...
+[2025-11-21T10:52:09.265Z] [Agent] Checking https://www.ft.com/rss
+[2025-11-21T10:52:19.268Z] [Agent] Validation failed for https://www.ft.com/rss: Request timed out after 10000ms
+[2025-11-21T10:52:19.269Z] [Agent] Checking https://www.ft.com/rss/home
+[2025-11-21T10:52:29.270Z] [Agent] Validation failed for https://www.ft.com/rss/home: Request timed out after 10000ms
+[2025-11-21T10:52:29.271Z] [Agent] Checking https://www.ft.com/?format=rss
+[2025-11-21T10:52:33.354Z] [Agent] Validation failed for https://www.ft.com/?format=rss: connect ENETUNREACH 108.160.163.117:443
+[2025-11-21T10:52:33.355Z] [Agent] Checking https://www.ft.com/news?format=rss
+[2025-11-21T10:52:43.357Z] [Agent] Validation failed for https://www.ft.com/news?format=rss: Request timed out after 10000ms
+[2025-11-21T10:52:43.357Z] [Agent] Checking https://www.ft.com/world?format=rss
+[2025-11-21T10:52:53.360Z] [Agent] Validation failed for https://www.ft.com/world?format=rss: Request timed out after 10000ms
+[2025-11-21T10:52:53.361Z] [Agent] Checking https://www.ft.com/companies?format=rss
+[2025-11-21T10:52:57.461Z] [Agent] Validation failed for https://www.ft.com/companies?format=rss: connect ENETUNREACH 108.160.163.117:443
+[2025-11-21T10:52:57.464Z] [Agent] Checking https://www.ft.com/markets?format=rss
+[2025-11-21T10:53:07.470Z] [Agent] Validation failed for https://www.ft.com/markets?format=rss: Request timed out after 10000ms
+[2025-11-21T10:53:07.471Z] [Agent] Checking https://www.ft.com/opinion?format=rss
+[2025-11-21T10:53:17.476Z] [Agent] Validation failed for https://www.ft.com/opinion?format=rss: Request timed out after 10000ms
+[2025-11-21T10:53:17.479Z] [Agent] Checking https://www.ft.com/work-careers?format=rps
+[2025-11-21T10:53:27.483Z] [Agent] Validation failed for https://www.ft.com/work-careers?format=rps: Request timed out after 10000ms
+[2025-11-21T10:53:27.485Z] [Agent] Checking https://www.ft.com/rss/home/us
+[2025-11-21T10:53:37.488Z] [Agent] Validation failed for https://www.ft.com/rss/home/us: Request timed out after 10000ms
+[2025-11-21T10:53:37.490Z] [Agent] Checking https://www.ft.com/rss/companies
+[2025-11-21T10:53:47.492Z] [Agent] Validation failed for https://www.ft.com/rss/companies: Request timed out after 10000ms
+[2025-11-21T10:53:47.494Z] [Agent] Checking https://www.ft.com/rss/markets
+[2025-11-21T10:53:57.498Z] [Agent] Validation failed for https://www.ft.com/rss/markets: Request timed out after 10000ms
+[2025-11-21T10:53:57.499Z] [Agent] Checking https://www.ft.com/rss/world
+[2025-11-21T10:54:07.502Z] [Agent] Validation failed for https://www.ft.com/rss/world: Request timed out after 10000ms
+[2025-11-21T10:54:07.504Z] [Agent] Checking https://www.ft.com/rss/technology
+[2025-11-21T10:54:12.588Z] [Agent] Validation failed for https://www.ft.com/rss/technology: connect ENETUNREACH 108.160.163.117:443
+[2025-11-21T10:54:12.589Z] [Agent] Checking https://www.ft.com/rss/climate-capital
+[2025-11-21T10:54:22.593Z] [Agent] Validation failed for https://www.ft.com/rss/climate-capital: Request timed out after 10000ms
+[2025-11-21T10:54:22.594Z] [Agent] Checking https://www.ft.com/rss/opinion
+[2025-11-21T10:54:27.676Z] [Agent] Validation failed for https://www.ft.com/rss/opinion: connect ENETUNREACH 108.160.163.117:443
+[2025-11-21T10:54:27.678Z] [Agent] Checking https://www.ft.com/rss/lex
+[2025-11-21T10:54:37.683Z] [Agent] Validation failed for https://www.ft.com/rss/lex: Request timed out after 10000ms
+[2025-11-21T10:54:37.684Z] [Agent] Checking https://www.ft.com/rss/work-careers
+[2025-11-21T10:54:41.795Z] [Agent] Validation failed for https://www.ft.com/rss/work-careers: connect ENETUNREACH 108.160.163.117:443
+[2025-11-21T10:54:41.797Z] [Agent] Checking https://www.ft.com/rss/life-arts
+[2025-11-21T10:54:51.800Z] [Agent] Validation failed for https://www.ft.com/rss/life-arts: Request timed out after 10000ms
+[2025-11-21T10:54:51.801Z] [Agent] Checking https://www.ft.com/rss/how-to-spend-it
+[2025-11-21T10:55:01.805Z] [Agent] Validation failed for https://www.ft.com/rss/how-to-spend-it: Request timed out after 10000ms
+[2025-11-21T10:55:01.806Z] [Agent] Checking https://www.ft.com/fastft?format=rss
+[2025-11-21T10:55:08.891Z] [Agent] Validation failed for https://www.ft.com/fastft?format=rss: connect ENETUNREACH 108.160.163.117:443
+[2025-11-21T10:55:08.892Z] [Agent] Checking https://www.ft.com/news-feed
+[2025-11-21T10:55:18.896Z] [Agent] Validation failed for https://www.ft.com/news-feed: Request timed out after 10000ms
+[2025-11-21T10:55:18.898Z] [Agent] Checking https://www.ft.com/feeds
+[2025-11-21T10:55:28.902Z] [Agent] Validation failed for https://www.ft.com/feeds: Request timed out after 10000ms
+[2025-11-21T10:55:28.903Z] [Agent] Checking https://www.ft.com/syndication/rss
+[2025-11-21T10:55:38.906Z] [Agent] Validation failed for https://www.ft.com/syndication/rss: Request timed out after 10000ms
+[2025-11-21T10:55:38.907Z] [Agent] Checking https://syndication.ft.com/rss
+[2025-11-21T10:55:48.911Z] [Agent] Validation failed for https://syndication.ft.com/rss: Request timed out after 10000ms
+[2025-11-21T10:55:48.913Z] [Agent] Checking https://feeds.ft.com/rss
+[2025-11-21T10:55:58.917Z] [Agent] Validation failed for https://feeds.ft.com/rss: Request timed out after 10000ms
+[2025-11-21T10:55:58.918Z] [Agent] Checking https://rss.ft.com/rss
+[2025-11-21T10:56:08.920Z] [Agent] Validation failed for https://rss.ft.com/rss: Request timed out after 10000ms
+[2025-11-21T10:56:08.921Z] [Agent] Validation failed. No valid feed found.
+[2025-11-21T10:56:09.814Z] [ReAct] Decided action: search (Query: Financial Times syndication RSS Dow Jones)
+[2025-11-21T10:56:09.815Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:56:09.819Z] [Agent] Executing Search for: Financial Times syndication RSS Dow Jones
+[2025-11-21T10:56:15.925Z] [Agent] Found 8 search results
+[2025-11-21T10:56:17.160Z] [ReAct] Decided action: search (Query: site:ft.com "rss" OR "feed" OR "xml" filetype:xml)
+[2025-11-21T10:56:17.161Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:56:17.165Z] [Agent] Executing Search for: site:ft.com "rss" OR "feed" OR "xml" filetype:xml
+[2025-11-21T10:56:20.821Z] [Agent] Found 0 search results
+[2025-11-21T10:56:21.988Z] [ReAct] Decided action: search (Query: Financial Times RSS feed site:ft.com)
+[2025-11-21T10:56:21.989Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:56:21.992Z] [Agent] Executing Search for: Financial Times RSS feed site:ft.com
+[2025-11-21T10:56:25.127Z] [Agent] Found 0 search results
+[2025-11-21T10:56:26.112Z] [ReAct] Decided action: search (Query: Financial Times RSS feed site:news.ft.com OR site:ftalphaville.ft.com OR site:markets.ft.com)
+[2025-11-21T10:56:26.112Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:56:26.114Z] [Agent] Executing Search for: Financial Times RSS feed site:news.ft.com OR site:ftalphaville.ft.com OR site:markets.ft.com
+[2025-11-21T10:56:29.011Z] [Agent] Found 0 search results
+[2025-11-21T10:56:30.504Z] [ReAct] Decided action: search (Query: Financial Times RSS feed Dow Jones syndication)
+[2025-11-21T10:56:30.506Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:56:30.510Z] [Agent] Executing Search for: Financial Times RSS feed Dow Jones syndication
+[2025-11-21T10:56:35.922Z] [Agent] Found 0 search results
+[2025-11-21T10:56:37.130Z] [ReAct] Decided action: search (Query: site:dowjones.com OR site:dj.com "Financial Times" RSS feed)
+[2025-11-21T10:56:37.131Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:56:37.135Z] [Agent] Executing Search for: site:dowjones.com OR site:dj.com "Financial Times" RSS feed
+[2025-11-21T10:56:39.907Z] [Agent] Found 0 search results
+[2025-11-21T10:56:40.780Z] [ReAct] Decided action: search (Query: "Financial Times" RSS feed url https://ft.com)
+[2025-11-21T10:56:40.781Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:56:40.784Z] [Agent] Executing Search for: "Financial Times" RSS feed url https://ft.com
+[2025-11-21T10:56:43.638Z] [Agent] Found 0 search results
+[2025-11-21T10:56:44.796Z] [ReAct] Decided action: search (Query: site:ft.com "rss" OR "feed" OR "syndication" -site:help.ft.com)
+[2025-11-21T10:56:44.797Z] [Agent Thought] Based on history, decided to: search
+[2025-11-21T10:56:44.801Z] [Agent] Executing Search for: site:ft.com "rss" OR "feed" OR "syndication" -site:help.ft.com
+[2025-11-21T10:56:47.685Z] [Agent] Found 0 search results

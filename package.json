@@ -9,12 +9,17 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@langchain/core": "^1.0.6",
+    "@langchain/langgraph": "^1.0.2",
+    "@langchain/openai": "^1.1.2",
     "axios": "^1.13.2",
     "cheerio": "^1.1.2",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "langchain": "^1.0.6",
     "lucide-react": "^0.554.0",
     "next": "16.0.3",
+    "node-cron": "^4.2.1",
     "openai": "^6.9.1",
     "playwright-core": "^1.56.1",
     "puppeteer": "^24.30.0",
@@ -28,6 +33,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/node-cron": "^3.0.11",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "dotenv": "^17.2.3",

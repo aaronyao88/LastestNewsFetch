@@ -1,39 +1,59 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import Parser from 'rss-parser';
-
-// Reusing client logic from translator.ts (simplified)
-const getClient = () => {
-    const kimiKey = process.env.KIMI_API_KEY;
-    const openAiKey = process.env.OPENAI_API_KEY;
-
-    if (kimiKey) {
-        return {
-            client: new OpenAI({
-                apiKey: kimiKey,
-                baseURL: 'https://api.moonshot.cn/v1',
-            }),
-            model: 'kimi-k2-turbo-preview'
-        };
-    } else if (openAiKey) {
-        return {
-            client: new OpenAI({
-                apiKey: openAiKey,
-            }),
-            model: 'gpt-4o'
-        };
-    }
-    return null;
-};
+import { findRssWithAgent } from '@/services/rss-agent';
+import fs from 'fs';
+import path from 'path';
+import { getClient } from '@/lib/llm';
 
 export async function POST(request: Request) {
     try {
-        const { keyword } = await request.json();
+        let keyword: string;
+        try {
+            const body = await request.json();
+            keyword = body?.keyword;
+        } catch (e) {
+            return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
+        }
 
-        if (!keyword) {
+        if (!keyword || typeof keyword !== 'string' || !keyword.trim()) {
             return NextResponse.json({ error: 'Keyword is required' }, { status: 400 });
         }
 
+        // Check Feature Flag
+        let useAgent = false;
+        try {
+            const featuresPath = path.join(process.cwd(), 'data/features.json');
+            if (fs.existsSync(featuresPath)) {
+                const features = JSON.parse(fs.readFileSync(featuresPath, 'utf-8'));
+                useAgent = features?.useAgentSearch === true;
+            }
+        } catch (e) {
+            console.error("Failed to read feature flags", e);
+            // Continue with legacy method if feature flag read fails
+        }
+
+        if (useAgent) {
+            console.log(`[SmartSearch] Using Agent for: ${keyword}`);
+            try {
+                const agentResult = await findRssWithAgent(keyword);
+                if (agentResult?.result) {
+                    return NextResponse.json({
+                        result: agentResult.result,
+                        logs: agentResult.logs || []
+                    });
+                } else {
+                    // Agent didn't find result, fallback to legacy method
+                    console.log("Agent did not find result, falling back to legacy search...");
+                }
+            } catch (e) {
+                console.error("Agent search failed:", e);
+                // Fallback to legacy method if agent crashes
+                console.log("Falling back to legacy search due to agent error...");
+            }
+        }
+
+        // Legacy Method (Direct LLM)
         const config = getClient();
         if (!config) {
             return NextResponse.json({ error: 'No API Key configured' }, { status: 500 });

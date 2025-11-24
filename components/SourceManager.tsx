@@ -19,6 +19,8 @@ export function SourceManager() {
     const [addMode, setAddMode] = useState<'manual' | 'smart'>('smart');
     const [smartKeyword, setSmartKeyword] = useState('');
     const [smartResult, setSmartResult] = useState<Source | null>(null);
+    const [smartLogs, setSmartLogs] = useState<string[]>([]);
+    const [showLogs, setShowLogs] = useState(false);
 
     // Toast notification state
     const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
@@ -37,21 +39,45 @@ export function SourceManager() {
         if (!smartKeyword.trim()) return;
         setLoading(true);
         setSmartResult(null);
+        setSmartLogs([]);
         try {
             const res = await fetch('/api/sources/smart-search', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ keyword: smartKeyword })
             });
+
+            if (!res.ok) {
+                // Try to parse error message from response
+                let errorMessage = '搜索失败，请重试';
+                try {
+                    const errorData = await res.json();
+                    errorMessage = errorData.error || errorMessage;
+                } catch (e) {
+                    // If response is not JSON, use status text
+                    errorMessage = res.statusText || errorMessage;
+                }
+                setToast({ message: errorMessage, type: 'error' });
+                return;
+            }
+
             const data = await res.json();
+
+            if (data.logs) {
+                setSmartLogs(data.logs);
+            }
+
             if (data.error) {
                 setToast({ message: data.error, type: 'error' });
-            } else {
+            } else if (data.result) {
                 setSmartResult(data.result);
+            } else {
+                setToast({ message: '未找到结果', type: 'error' });
             }
         } catch (error) {
             console.error('Smart search failed:', error);
-            setToast({ message: '搜索失败，请重试', type: 'error' });
+            const errorMessage = error instanceof Error ? error.message : '搜索失败，请重试';
+            setToast({ message: errorMessage, type: 'error' });
         } finally {
             setLoading(false);
         }
@@ -68,6 +94,8 @@ export function SourceManager() {
             });
             setSmartResult(null);
             setSmartKeyword('');
+            setSmartLogs([]);
+            setShowLogs(false);
             await loadSources();
             setToast({ message: '添加成功！', type: 'success' });
         } catch (error) {
@@ -190,7 +218,7 @@ export function SourceManager() {
                                     value={smartKeyword}
                                     onChange={(e) => setSmartKeyword(e.target.value)}
                                     onKeyDown={(e) => e.key === 'Enter' && handleSmartSearch()}
-                                    className="flex-1 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                                    className="flex-1 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                                 />
                                 <button
                                     onClick={handleSmartSearch}
@@ -204,6 +232,31 @@ export function SourceManager() {
                                 输入网站名称或话题，AI 将自动查找可用的 RSS 源。
                             </p>
                         </div>
+
+                        {/* Logs Section */}
+                        {smartLogs.length > 0 && (
+                            <div className="mt-2">
+                                <button
+                                    onClick={() => setShowLogs(!showLogs)}
+                                    className="text-xs text-gray-500 hover:text-gray-700 flex items-center gap-1"
+                                >
+                                    {showLogs ? '隐藏搜索日志' : '查看搜索日志'}
+                                    <svg className={`w-3 h-3 transition-transform ${showLogs ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                {showLogs && (
+                                    <div className="mt-2 p-3 bg-gray-50 rounded-lg border border-gray-200 text-xs font-mono text-gray-600 space-y-1 max-h-40 overflow-y-auto">
+                                        {smartLogs.map((log, i) => (
+                                            <div key={i} className="break-all">
+                                                <span className="text-gray-400 mr-2">[{i + 1}]</span>
+                                                {log}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
 
                         {smartResult && (
                             <div className="mt-4 p-3 sm:p-4 bg-blue-50 border border-blue-100 rounded-lg animate-in fade-in slide-in-from-top-2">
@@ -258,7 +311,7 @@ export function SourceManager() {
                                 placeholder="https://example.com/feed"
                                 value={newSource.url}
                                 onChange={(e) => setNewSource({ ...newSource, url: e.target.value })}
-                                className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                                className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                             />
                         </div>
                         <div className="md:col-span-3">
@@ -268,7 +321,7 @@ export function SourceManager() {
                                 placeholder="例如: 36氪"
                                 value={newSource.source}
                                 onChange={(e) => setNewSource({ ...newSource, source: e.target.value })}
-                                className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                                className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                             />
                         </div>
                         <div className="md:col-span-2">
